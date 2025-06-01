@@ -107,7 +107,29 @@ class Zlibrary_plugin implements Plugin.PluginBase {
   ): Promise<Plugin.NovelItem[]> {
     const novels: Plugin.NovelItem[] = [];
 
-    // get novels using the search term
+    const html: string = await this.getHtml(
+      this.site + '/s/' + searchTerm.trim(),
+    );
+
+    const $: cheerio.CheerioAPI = await loadCheerio(html);
+
+    $('#searchResultBox')
+      .find('div.book-item')
+      .each((idx, element) => {
+        // Wrap the raw element with Cheerio so we can use Cheerio methods
+        const el = $(element);
+        const title = el.find('div[slot=title]').text().trim();
+        const url = el.find('z-bookcard').attr('href');
+        const cover = el.find('z-bookcard').find('img').attr('data-src');
+        const name = `${title}`;
+        const path = `${url}`;
+        // Push the extracted data into the array
+        novels.push({
+          name,
+          path,
+          cover,
+        });
+      });
 
     return novels;
   }
