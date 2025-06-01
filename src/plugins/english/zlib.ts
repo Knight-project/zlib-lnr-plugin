@@ -15,7 +15,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
   id = 'zlibrary';
   name = 'Z Library';
   icon = 'src/en/fictionzone/icon.png';
-  site = 'https://zlib.gl';
+  site = 'https://z-lib.gl';
   version = '1.0.0';
   filters: Filters | undefined = undefined;
   imageRequestInit?: Plugin.ImageRequestInit | undefined = undefined;
