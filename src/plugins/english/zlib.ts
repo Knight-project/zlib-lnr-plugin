@@ -45,7 +45,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
         const url = el.find('a').attr('href');
         const cover = el.find('z-cover').find('img').attr('src');
         const name = `${title}`;
-        const path = `${url}`;
+        const path = `${this.cleanUp(`${url}`, '/book')}`;
         // Push the extracted data into the array
         novels.push({
           name,
