@@ -63,10 +63,16 @@ class Zlibrary_plugin implements Plugin.PluginBase {
     return data;
   }
 
+  async cleanUp(url: string, removePart: string) {
+    return url.replace(removePart, '');
+  }
   async parseNovel(novelPath: string): Promise<Plugin.SourceNovel> {
+    novelPath = await this.cleanUp(novelPath, '/book');
+    novelPath = await this.cleanUp(novelPath, '?dsource=mostpopular');
 
+    console.log(novelPath);
     console.log(this.site + `${novelPath}`);
-    const novelpage = await this.getHtml(this.site + `${novelPath}`);
+    const novelpage = await this.getHtml(this.site + `/book${novelPath}`);
 
     const $ = loadCheerio(novelpage);
 
