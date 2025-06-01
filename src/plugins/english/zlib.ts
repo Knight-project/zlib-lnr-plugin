@@ -58,7 +58,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
   }
 
   async getHtml(url: string) {
-    const html = await fetchApi(url);
+    const html = await fetch(url);
     const data = await html.text();
     return data;
   }
