@@ -42,10 +42,10 @@ class Zlibrary_plugin implements Plugin.PluginBase {
         // Wrap the raw element with Cheerio so we can use Cheerio methods
         const el = $(element);
         const title = el.find('z-cover').attr('title');
-        const url = el.find('a').attr('href');
+        const url = `${el.find('a').attr('href')}`;
         const cover = el.find('z-cover').find('img').attr('src');
         const name = `${title}`;
-        const path = `${this.cleanUp(`${url}`, '/book')}`;
+        const path = url.replace('/book/', '');
         // Push the extracted data into the array
         novels.push({
           name,
@@ -67,12 +67,14 @@ class Zlibrary_plugin implements Plugin.PluginBase {
     return url.replace(removePart, '');
   }
   async parseNovel(novelPath: string): Promise<Plugin.SourceNovel> {
-    novelPath = await this.cleanUp(novelPath, '/book');
+    //novelPath = await this.cleanUp(novelPath, '/book');
     novelPath = await this.cleanUp(novelPath, '?dsource=mostpopular');
+
+    //if the webview on android works now then add this cleanup thing to the main functions
 
     console.log(novelPath);
     console.log(this.site + `${novelPath}`);
-    const novelpage = await this.getHtml(this.site + `/book${novelPath}`);
+    const novelpage = await this.getHtml(this.site + `/book/${novelPath}`);
 
     const $ = loadCheerio(novelpage);
 
