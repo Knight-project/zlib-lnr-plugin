@@ -65,8 +65,10 @@ class Zlibrary_plugin implements Plugin.PluginBase {
 
   async parseNovel(novelPath: string): Promise<Plugin.SourceNovel> {
 
-    const novelpage = await this.getHtml(this.site + `${novelPath}`)
-    const $ = loadCheerio(novelpage)
+    console.log(this.site + `${novelPath}`);
+    const novelpage = await this.getHtml(this.site + `${novelPath}`);
+
+    const $ = loadCheerio(novelpage);
 
     const novel: Plugin.SourceNovel = {
       path: novelPath,
@@ -79,7 +81,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
     // novel.name = '';
     // novel.artist = '';
     // novel.author = '';
-    novel.cover = defaultCover;
+    novel.cover = `${$('z-cover').find('img').attr('src')}`;
     // novel.genres = '';
     // novel.status = NovelStatus.Completed;
     // novel.summary = '';
@@ -106,7 +108,6 @@ class Zlibrary_plugin implements Plugin.PluginBase {
     return chapterText;
   }
 
-
   async searchNovels(
     searchTerm: string,
     pageNo: number,
@@ -123,7 +124,6 @@ class Zlibrary_plugin implements Plugin.PluginBase {
     $('#searchResultBox')
       .find('div.book-item')
       .each((idx, element) => {
-
         const el = $(element);
         const title = el.find('div[slot=title]').text().trim();
         const url = el.find('z-bookcard').attr('href');
