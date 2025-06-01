@@ -64,9 +64,13 @@ class Zlibrary_plugin implements Plugin.PluginBase {
   }
 
   async parseNovel(novelPath: string): Promise<Plugin.SourceNovel> {
+
+    const novelpage = await this.getHtml(this.site + `${novelPath}`)
+    const $ = loadCheerio(novelpage)
+
     const novel: Plugin.SourceNovel = {
       path: novelPath,
-      name: 'Untitled',
+      name: $('div.col-sm-9').find('h1').text().trim(),
     };
 
     // TODO: get here data from the site and
@@ -101,6 +105,8 @@ class Zlibrary_plugin implements Plugin.PluginBase {
     const chapterText = '';
     return chapterText;
   }
+
+
   async searchNovels(
     searchTerm: string,
     pageNo: number,
@@ -111,19 +117,20 @@ class Zlibrary_plugin implements Plugin.PluginBase {
       this.site + '/s/' + searchTerm.trim(),
     );
 
+    //I know the await does nothing here but don't remove it pls!
     const $: cheerio.CheerioAPI = await loadCheerio(html);
 
     $('#searchResultBox')
       .find('div.book-item')
       .each((idx, element) => {
-        // Wrap the raw element with Cheerio so we can use Cheerio methods
+
         const el = $(element);
         const title = el.find('div[slot=title]').text().trim();
         const url = el.find('z-bookcard').attr('href');
         const cover = el.find('z-bookcard').find('img').attr('data-src');
         const name = `${title}`;
         const path = `${url}`;
-        // Push the extracted data into the array
+
         novels.push({
           name,
           path,
