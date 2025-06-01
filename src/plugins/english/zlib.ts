@@ -4,6 +4,7 @@ import { Filters } from '@libs/filterInputs';
 import { load as loadCheerio } from 'cheerio';
 import { defaultCover } from '@libs/defaultCover';
 import { NovelStatus } from '@libs/novelStatus';
+import * as cheerio from 'cheerio';
 // import { isUrlAbsolute } from '@libs/isAbsoluteUrl';
 // import { storage, localStorage, sessionStorage } from '@libs/storage';
 // import { encode, decode } from 'urlencode';
@@ -31,14 +32,37 @@ class Zlibrary_plugin implements Plugin.PluginBase {
   ): Promise<Plugin.NovelItem[]> {
     const novels: Plugin.NovelItem[] = [];
 
-    /** Add your fetching code here */
-    novels.push({
-      name: 'Novel1',
-      path: '/novels/1',
-      cover: defaultCover,
-    });
+    const html: string = await this.getHtml(this.site + '/popular');
+
+    const $: cheerio.CheerioAPI = loadCheerio(html);
+
+    $('div.masonry-endless')
+      .find('div.item')
+      .each((idx, element) => {
+        // Wrap the raw element with Cheerio so we can use Cheerio methods
+        const el = $(element);
+        const title = el.find('z-cover').attr('title');
+        const url = el.find('a').attr('href');
+        const cover = el.find('img.image').attr('src');
+        const name = `${title}`;
+        const path = `${url}`;
+        // Push the extracted data into the array
+        novels.push({
+          name,
+          path,
+          cover,
+        });
+      });
+
     return novels;
   }
+
+  async getHtml(url: string) {
+    const html = await fetchApi(url);
+    const data = await html.text();
+    return data;
+  }
+
   async parseNovel(novelPath: string): Promise<Plugin.SourceNovel> {
     const novel: Plugin.SourceNovel = {
       path: novelPath,
