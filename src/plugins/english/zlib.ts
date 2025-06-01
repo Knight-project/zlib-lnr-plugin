@@ -15,7 +15,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
   id = 'zlibrary';
   name = 'Z Library';
   icon = 'src/en/fictionzone/icon.png';
-  site = 'https://z-lib.gl';
+  site = 'https://z-lib.fm';
   version = '1.0.0';
   filters: Filters | undefined = undefined;
   imageRequestInit?: Plugin.ImageRequestInit | undefined = undefined;
@@ -43,7 +43,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
         const el = $(element);
         const title = el.find('z-cover').attr('title');
         const url = el.find('a').attr('href');
-        const cover = el.find('img.image').attr('src');
+        const cover = el.find('z-cover').find('img').attr('src');
         const name = `${title}`;
         const path = `${url}`;
         // Push the extracted data into the array
