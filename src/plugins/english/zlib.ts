@@ -63,21 +63,46 @@ class Zlibrary_plugin implements Plugin.PluginBase {
     return data;
   }
 
-  async cleanUp(url: string, removePart: string) {
+  /*async cleanUp(url: string, removePart: string) {
     return url.replace(removePart, '');
-  }
+  } */
   //Don't ask questions.
   async parseNovel(novelPath: string): Promise<Plugin.SourceNovel> {
+    // The code under here breaks the plugin
+
     //const buffer : string  = novelPath
     //buffer = await this.cleanUp(buffer, '/book/');
     //buffer = await this.cleanUp(buffer, '?dsource=mostpopular');
+    //
+    // Try the code underneath
+    //
+    // novelPath.replace('/book/' , '');
+    // novelPath.replace('?dsource=mostpopular' , '');
 
     //if the webview on android works now then add this cleanup thing to the main functions
-    //console.log(novelPath);
-    //console.log(this.site + `${novelPath}`);
-    const novelpage = await this.getHtml(this.site + `${novelPath}`);
+    //
+    // The code above here breaks the plugin
+    const novelpage = await this.getHtml(
+      this.site + /* '/book/' + */ `${novelPath}`,
+    );
+
+    console.log(novelpage);
 
     const $ = loadCheerio(novelpage);
+
+    console.log($);
+
+    //const script = $('script[type="application/ld+json"]')
+    //  .text()
+    //  .replace(/[\u0000-\u001F\u007F-\u009F\u200B\uFEFF]/g, '')
+    //  .replace(/[""]/g, '"')
+    //  .replace(/['']/g, "'");
+
+    //console.log(script.slice(500, 530));
+
+    //const jsonScript: JSON = JSON.parse(script);
+
+    //console.log(jsonScript);
 
     const novel: Plugin.SourceNovel = {
       path: novelPath,
@@ -87,13 +112,13 @@ class Zlibrary_plugin implements Plugin.PluginBase {
     // TODO: get here data from the site and
     // un-comment and fill-in the relevant fields
 
-    // novel.name = '';
+    novel.name = `${$('div.col-sm-9').find('h1').text().trim()}`;
     // novel.artist = '';
-    // novel.author = '';
+    novel.author = `${$('z-cover').attr('author')}`;
     novel.cover = `${$('z-cover').find('img').attr('src')}`;
-    // novel.genres = '';
-    // novel.status = NovelStatus.Completed;
-    // novel.summary = '';
+    novel.genres = `${$('div.col-sm-9').find('div.bookDetailsBox').find('div.property_value').find('a').text().trim()}`;
+    novel.status = NovelStatus.Completed;
+    novel.summary = `${$('div.col-sm-9').find('#bookDescriptionBox').text().trim()}`;
 
     const chapters: Plugin.ChapterItem[] = [];
 
