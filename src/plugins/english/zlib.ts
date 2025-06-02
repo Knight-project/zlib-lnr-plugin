@@ -45,7 +45,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
         const url = `${el.find('a').attr('href')}`;
         const cover = el.find('z-cover').find('img').attr('src');
         const name = `${title}`;
-        const path = `${url}`; //.replace('/book/', '');
+        const path = `${url.replace(/^\/book\//, '')}`; //.replace('/book/', '');
         // Push the extracted data into the array
         novels.push({
           name,
@@ -69,40 +69,11 @@ class Zlibrary_plugin implements Plugin.PluginBase {
   //Don't ask questions.
   async parseNovel(novelPath: string): Promise<Plugin.SourceNovel> {
     // The code under here breaks the plugin
-
-    //const buffer : string  = novelPath
-    //buffer = await this.cleanUp(buffer, '/book/');
-    //buffer = await this.cleanUp(buffer, '?dsource=mostpopular');
-    //
-    // Try the code underneath
-    //
-    // novelPath.replace('/book/' , '');
-    // novelPath.replace('?dsource=mostpopular' , '');
-
-    //if the webview on android works now then add this cleanup thing to the main functions
     //
     // The code above here breaks the plugin
-    const novelpage = await this.getHtml(
-      this.site + /* '/book/' + */ `${novelPath}`,
-    );
-
-    console.log(novelpage);
+    const novelpage = await this.getHtml(`${this.site}/book/${novelPath}`);
 
     const $ = loadCheerio(novelpage);
-
-    console.log($);
-
-    //const script = $('script[type="application/ld+json"]')
-    //  .text()
-    //  .replace(/[\u0000-\u001F\u007F-\u009F\u200B\uFEFF]/g, '')
-    //  .replace(/[""]/g, '"')
-    //  .replace(/['']/g, "'");
-
-    //console.log(script.slice(500, 530));
-
-    //const jsonScript: JSON = JSON.parse(script);
-
-    //console.log(jsonScript);
 
     const novel: Plugin.SourceNovel = {
       path: novelPath,
