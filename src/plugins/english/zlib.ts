@@ -1,8 +1,8 @@
-import { fetchApi, fetchProto, fetchText } from '@libs/fetch';
+//import { fetchApi, fetchProto, fetchText } from '@libs/fetch';
 import { Plugin } from '@typings/plugin';
 import { Filters } from '@libs/filterInputs';
 import { load as loadCheerio } from 'cheerio';
-import { defaultCover } from '@libs/defaultCover';
+//import { defaultCover } from '@libs/defaultCover';
 import { NovelStatus } from '@libs/novelStatus';
 import * as cheerio from 'cheerio';
 // import { isUrlAbsolute } from '@libs/isAbsoluteUrl';
@@ -81,7 +81,6 @@ class Zlibrary_plugin implements Plugin.PluginBase {
     };
 
     // TODO: get here data from the site and
-    // un-comment and fill-in the relevant fields
 
     novel.name = `${$('div.col-sm-9').find('h1').text().trim()}`;
     // novel.artist = '';
@@ -167,17 +166,6 @@ class Zlibrary_plugin implements Plugin.PluginBase {
 
     const chapters: Plugin.ChapterItem[] = [];
 
-    console.log(
-      $(
-        'div.col-md-12 div section.book-actions-container div.book-details-button div.btn-group',
-      )
-        .eq(2)
-        .find('a.btn')
-        .attr('href'),
-    );
-    // TODO: here parse the chapter list
-
-    // TODO: add each chapter to the list using
     const chapter: Plugin.ChapterItem = {
       name: `${$('div.col-sm-9').find('h1').text().trim()}`,
       path: `${$(
@@ -186,7 +174,11 @@ class Zlibrary_plugin implements Plugin.PluginBase {
         .eq(2)
         .find('a.btn')
         .attr('href')}`,
-      releaseTime: '',
+      releaseTime:
+        $('div.col-sm-9 div.bookDetailsBox div.property_year')
+          .find('div.property_value')
+          .text()
+          .trim() || 'Unavailable',
       chapterNumber: 0,
     };
     chapters.push(chapter);
@@ -195,9 +187,17 @@ class Zlibrary_plugin implements Plugin.PluginBase {
     return novel;
   }
   async parseChapter(chapterPath: string): Promise<string> {
-    // parse chapter text here
-    const chapterText = '';
-    return chapterText;
+    if (chapterPath) {
+      const epubLink = `${this.site}${chapterPath}`;
+      return `
+          <p>
+            <b>Click below to download the EPUB:</b><br/>
+            <a href="${epubLink}">${epubLink}</a>
+          </p>
+        `;
+    }
+
+    return 'No content.';
   }
 
   async searchNovels(
@@ -234,7 +234,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
   }
 
   resolveUrl = (path: string, isNovel?: boolean) =>
-    this.site + (isNovel ? '/book/' : '/') + path;
+    this.site + (isNovel ? '/book/' : '') + path;
 }
 
 export default new Zlibrary_plugin();
