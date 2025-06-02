@@ -67,13 +67,13 @@ class Zlibrary_plugin implements Plugin.PluginBase {
     return url.replace(removePart, '');
   }
   async parseNovel(novelPath: string): Promise<Plugin.SourceNovel> {
-    novelPath = await this.cleanUp(novelPath, '/book/');
+    //novelPath = await this.cleanUp(novelPath, '/book/');
     novelPath = await this.cleanUp(novelPath, '?dsource=mostpopular');
 
     //if the webview on android works now then add this cleanup thing to the main functions
     //console.log(novelPath);
     //console.log(this.site + `${novelPath}`);
-    const novelpage = await this.getHtml(this.site + `/book/${novelPath}`);
+    const novelpage = await this.getHtml(this.site + `${novelPath}`);
 
     const $ = loadCheerio(novelpage);
 
