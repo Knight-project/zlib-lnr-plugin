@@ -66,9 +66,11 @@ class Zlibrary_plugin implements Plugin.PluginBase {
   async cleanUp(url: string, removePart: string) {
     return url.replace(removePart, '');
   }
+  //Don't ask questions.
   async parseNovel(novelPath: string): Promise<Plugin.SourceNovel> {
-    //novelPath = await this.cleanUp(novelPath, '/book/');
-    novelPath = await this.cleanUp(novelPath, '?dsource=mostpopular');
+    //const buffer : string  = novelPath
+    //buffer = await this.cleanUp(buffer, '/book/');
+    //buffer = await this.cleanUp(buffer, '?dsource=mostpopular');
 
     //if the webview on android works now then add this cleanup thing to the main functions
     //console.log(novelPath);
