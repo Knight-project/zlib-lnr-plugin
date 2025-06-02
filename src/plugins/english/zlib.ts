@@ -45,7 +45,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
         const url = `${el.find('a').attr('href')}`;
         const cover = el.find('z-cover').find('img').attr('src');
         const name = `${title}`;
-        const path = `${url}` //.replace('/book/', '');
+        const path = `${url}`; //.replace('/book/', '');
         // Push the extracted data into the array
         novels.push({
           name,
@@ -71,9 +71,8 @@ class Zlibrary_plugin implements Plugin.PluginBase {
     novelPath = await this.cleanUp(novelPath, '?dsource=mostpopular');
 
     //if the webview on android works now then add this cleanup thing to the main functions
-
-    console.log(novelPath);
-    console.log(this.site + `${novelPath}`);
+    //console.log(novelPath);
+    //console.log(this.site + `${novelPath}`);
     const novelpage = await this.getHtml(this.site + `/book/${novelPath}`);
 
     const $ = loadCheerio(novelpage);
