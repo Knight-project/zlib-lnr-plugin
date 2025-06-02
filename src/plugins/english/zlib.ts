@@ -89,8 +89,81 @@ class Zlibrary_plugin implements Plugin.PluginBase {
     novel.cover = `${$('z-cover').find('img').attr('src')}`;
     novel.genres = `${$('div.col-sm-9').find('div.bookDetailsBox').find('div.property_value').find('a').text().trim()}`;
     novel.status = NovelStatus.Completed;
-    novel.summary = `${$('div.col-sm-9').find('#bookDescriptionBox').text().trim()}`;
 
+    const novelDescription: string = $('div.col-sm-9')
+      .find('#bookDescriptionBox')
+      .text()
+      .trim();
+
+    const formattedNovelDescription: string = novelDescription
+      .split(/\n+/)
+      .map(p => p.trim())
+      .filter(Boolean)
+      .join('\n\n');
+
+    const showDesc: string =
+      formattedNovelDescription || 'Description Unavailable';
+
+    const type: string =
+      $('div.col-sm-9 div.bookDetailsBox div.property_content_type')
+        .find('span')
+        .text()
+        .trim() || 'Unavailable';
+
+    const year: string =
+      $('div.col-sm-9 div.bookDetailsBox div.property_year')
+        .find('div.property_value')
+        .text()
+        .trim() || 'Unavailable';
+
+    const publisher: string =
+      $('div.col-sm-9 div.bookDetailsBox div.property_publisher')
+        .find('div.property_value')
+        .text()
+        .trim() || 'Unavailable';
+
+    const language: string =
+      $('div.col-sm-9 div.bookDetailsBox div.property_language')
+        .find('div.property_value')
+        .text()
+        .toUpperCase()
+        .trim() || 'Unavailable';
+
+    const pages: string =
+      $('div.col-sm-9 div.bookDetailsBox div.property_pages')
+        .find('div.property_value')
+        .text()
+        .trim() || 'Unavailable';
+
+    const isbn10: string =
+      $('div.col-sm-9 div.bookDetailsBox div.10')
+        .find('div.property_value')
+        .text()
+        .trim() || 'Unavailable';
+
+    const isbn13: string =
+      $('div.col-sm-9 div.bookDetailsBox div.13')
+        .find('div.property_value')
+        .text()
+        .trim() || 'Unavailable';
+
+    const filetypeSize: string =
+      $('div.col-sm-9 div.bookDetailsBox div.property__file')
+        .find('div.property_value')
+        .text()
+        .trim() || 'Unavailable';
+
+    novel.summary = `
+      ${showDesc}\n
+      Type : ${type}\n
+      Year : ${year}\n
+      Publisher : ${publisher}\n
+      Language : ${language}\n
+      Pages : ${pages}\n
+      ISBN10 : ${isbn10}\n
+      ISBN13 : ${isbn13}\n
+      Filetype&Size : ${filetypeSize}
+      `;
     const chapters: Plugin.ChapterItem[] = [];
 
     // TODO: here parse the chapter list
@@ -131,10 +204,10 @@ class Zlibrary_plugin implements Plugin.PluginBase {
       .each((idx, element) => {
         const el = $(element);
         const title = el.find('div[slot=title]').text().trim();
-        const url = el.find('z-bookcard').attr('href');
+        const url = `${el.find('z-bookcard').attr('href')}`;
         const cover = el.find('z-bookcard').find('img').attr('data-src');
         const name = `${title}`;
-        const path = `${url}`;
+        const path = `${url.replace(/^\/book\//, '')}`;
 
         novels.push({
           name,
