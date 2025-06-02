@@ -164,14 +164,28 @@ class Zlibrary_plugin implements Plugin.PluginBase {
       ISBN13 : ${isbn13}\n
       Filetype&Size : ${filetypeSize}
       `;
+
     const chapters: Plugin.ChapterItem[] = [];
 
+    console.log(
+      $(
+        'div.col-md-12 div section.book-actions-container div.book-details-button div.btn-group',
+      )
+        .eq(2)
+        .find('a.btn')
+        .attr('href'),
+    );
     // TODO: here parse the chapter list
 
     // TODO: add each chapter to the list using
     const chapter: Plugin.ChapterItem = {
-      name: '',
-      path: '',
+      name: `${$('div.col-sm-9').find('h1').text().trim()}`,
+      path: `${$(
+        'div.col-md-12 div section.book-actions-container div.book-details-button div.btn-group',
+      )
+        .eq(2)
+        .find('a.btn')
+        .attr('href')}`,
       releaseTime: '',
       chapterNumber: 0,
     };
@@ -220,7 +234,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
   }
 
   resolveUrl = (path: string, isNovel?: boolean) =>
-    this.site + (isNovel ? '/book/' : '/chapter/') + path;
+    this.site + (isNovel ? '/book/' : '/') + path;
 }
 
 export default new Zlibrary_plugin();
