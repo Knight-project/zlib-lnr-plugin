@@ -162,7 +162,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
     const chapters: Plugin.ChapterItem[] = [];
 
     const chapter: Plugin.ChapterItem = {
-      name: `${$('div.col-sm-9').find('h1').text().trim()}`,
+      name: `Download/read ${$('div.col-sm-9').find('h1').text().trim()}`,
       path: `${novelPath}`,
       releaseTime:
         $('div.col-sm-9 div.bookDetailsBox div.property_year')
