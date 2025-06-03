@@ -14,8 +14,8 @@ import * as cheerio from 'cheerio';
 class Zlibrary_plugin implements Plugin.PluginBase {
   id = 'zlibrary';
   name = 'Z Library';
-  icon = 'src/en/fictionzone/icon.png';
-  site = 'https://z-lib.gl';
+  icon = 'src/en/zlib/zlib.png';
+  site = 'https://z-lib.fm';
   version = '1.0.0';
   filters: Filters | undefined = undefined;
   imageRequestInit?: Plugin.ImageRequestInit | undefined = undefined;
@@ -195,7 +195,8 @@ class Zlibrary_plugin implements Plugin.PluginBase {
             <br/>
             <b>Plese login to the Z-Library website to download/read the book.</b>
             <br/>
-            <b>Remember to import the Downloaded EPUB file to access it in the lnreader app</b>
+            <br/>
+            <b>Remember to import the downloaded EPUB file to access it in the lnreader app.</b>
             <br/>
             <br/>
             <br/>
