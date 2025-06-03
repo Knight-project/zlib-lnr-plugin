@@ -157,7 +157,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
         .text()
         .trim() || 'Unavailable';
 
-    novel.summary = `Disclaimer : YOU NEED TO LOG IN TO THE Z-LIBRARY WEBSITE THROUGH THE WEBVIEW TO DOWNLOAD/READ THE BOOK. \n Name : ${$('div.col-sm-9').find('h1').text().trim()}\nType : ${type}\nYear : ${year}\nPublisher : ${publisher}\nLanguage : ${language}\nPages : ${pages}\nISBN10 : ${isbn10}\nISBN13 : ${isbn13}\nFiletype&Size : ${filetypeSize}\n\n${showDesc}`;
+    novel.summary = `DISCLAIMER : YOU NEED TO LOG IN TO THE Z-LIBRARY WEBSITE THROUGH THE WEBVIEW TO DOWNLOAD OR READ THE BOOK! \n\n\nName : ${$('div.col-sm-9').find('h1').text().trim()}\nType : ${type}\nYear : ${year}\nPublisher : ${publisher}\nLanguage : ${language}\nPages : ${pages}\nISBN10 : ${isbn10}\nISBN13 : ${isbn13}\nFiletype&Size : ${filetypeSize}\n\n${showDesc}`;
 
     const chapters: Plugin.ChapterItem[] = [];
 
@@ -191,19 +191,26 @@ class Zlibrary_plugin implements Plugin.PluginBase {
       const epubLink = `${this.site}/book/${chapterPath}`;
       return `
           <p>
-            </br>
-            </br>
+            <br/>
+            <br/>
             <b>Plese login to the Z-Library website to download/read the book.</b>
-            </br>
+            <br/>
             <b>Remember to import the Downloaded EPUB file to access it in the lnreader app</b>
-            </br>
-            </br>
+            <br/>
+            <br/>
+            <br/>
             <b>Click below to Read the book online</b><br/>
             <a href="${readOnline}">Read Online</a>
             <br/>
             <br/>
-            <b>Click below to download the EPUB (!!to download without leaving lnreader open the webview in the novel page!!):</b><br/>
+            <br/>
+            <b>Click below to download the EPUB :\n (!! To download without leaving lnreader open the webview in the novel page after clicking the link! !!)</b>
+            <br/>
             <a href="${epubLink}">Download</a>
+            <br/>
+            <br/>
+            <br/>
+            <b>Happy reading!</b>
           </p>
         `;
     }
@@ -244,7 +251,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
   }
 
   resolveUrl = (path: string, isNovel?: boolean) =>
-    this.site + (isNovel ? '/book/' : '') + path;
+    this.site + (isNovel ? '/book/' : '/book/') + path;
 }
 
 export default new Zlibrary_plugin();
