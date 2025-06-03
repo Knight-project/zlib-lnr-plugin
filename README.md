@@ -1,12 +1,6 @@
-# LNReader Plugins
+# Z-lib plugin for lnreader
 
-<p>
-<img alt="LNReader plugins counting" src="https://raw.githubusercontent.com/LNReader/lnreader-plugins/plugins/v3.0.0/total.svg">
-<img alt="GitHub issues by-label"  src="https://img.shields.io/github/issues/lnreader/lnreader-plugins/Source%20Request?color=success&label=source%20requests">
-<img  alt="GitHub issues by-label"  src="https://img.shields.io/github/issues/lnreader/lnreader-plugins/Bug?color=red&label=bugs">
-</p>
-
-Repository to host plugins and related issues, and requests for
+Download LNReader
 [LNReader](https://github.com/LNReader/lnreader).
 
 ## Installing
