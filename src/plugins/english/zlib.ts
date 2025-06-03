@@ -15,7 +15,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
   id = 'zlibrary';
   name = 'Z Library';
   icon = 'src/en/fictionzone/icon.png';
-  site = 'https://z-lib.fm';
+  site = 'https://z-lib.gl';
   version = '1.0.0';
   filters: Filters | undefined = undefined;
   imageRequestInit?: Plugin.ImageRequestInit | undefined = undefined;
@@ -88,6 +88,11 @@ class Zlibrary_plugin implements Plugin.PluginBase {
     novel.cover = `${$('z-cover').find('img').attr('src')}`;
     novel.genres = `${$('div.col-sm-9').find('div.bookDetailsBox').find('div.property_value').find('a').text().trim()}`;
     novel.status = NovelStatus.Completed;
+    novel.rating = $(
+      'div.col-sm-9 div.book-rating-detail div.book-rating span.book-rating-interest-score',
+    )
+      .text()
+      .trim();
 
     const novelDescription: string = $('div.col-sm-9')
       .find('#bookDescriptionBox')
@@ -152,22 +157,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
         .text()
         .trim() || 'Unavailable';
 
-    novel.summary = `
-      <p>
-      Name : ${$('div.col-sm-9').find('h1').text().trim()}\n
-      <br/>
-      Type : ${type}\n
-      Year : ${year}\n
-      Publisher : ${publisher}\n
-      Language : ${language}\n
-      Pages : ${pages}\n
-      ISBN10 : ${isbn10}\n
-      ISBN13 : ${isbn13}\n
-      Filetype&Size : ${filetypeSize}\n </p>
-      <br/>
-      <br/>
-      <p>${showDesc}</p>
-      `;
+    novel.summary = `Disclaimer : YOU NEED TO LOG IN TO THE Z-LIBRARY WEBSITE THROUGH THE WEBVIEW TO DOWNLOAD/READ THE BOOK. \n Name : ${$('div.col-sm-9').find('h1').text().trim()}\nType : ${type}\nYear : ${year}\nPublisher : ${publisher}\nLanguage : ${language}\nPages : ${pages}\nISBN10 : ${isbn10}\nISBN13 : ${isbn13}\nFiletype&Size : ${filetypeSize}\n\n${showDesc}`;
 
     const chapters: Plugin.ChapterItem[] = [];
 
@@ -208,12 +198,12 @@ class Zlibrary_plugin implements Plugin.PluginBase {
             <b>Remember to import the Downloaded EPUB file to access it in the lnreader app</b>
             </br>
             </br>
-            <b>Click below to download the EPUB:</b><br/>
-            <a href="${epubLink}">Download</a>
-            <br/>
-            <br/>
             <b>Click below to Read the book online</b><br/>
             <a href="${readOnline}">Read Online</a>
+            <br/>
+            <br/>
+            <b>Click below to download the EPUB (!!to download without leaving lnreader open the webview in the novel page!!):</b><br/>
+            <a href="${epubLink}">Download</a>
           </p>
         `;
     }
@@ -223,7 +213,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
 
   async searchNovels(
     searchTerm: string,
-    pageNo: number,
+    //pageNo: number,
   ): Promise<Plugin.NovelItem[]> {
     const novels: Plugin.NovelItem[] = [];
 
@@ -231,8 +221,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
       this.site + '/s/' + searchTerm.trim(),
     );
 
-    //I know the await does nothing here but don't remove it pls!
-    const $: cheerio.CheerioAPI = await loadCheerio(html);
+    const $: cheerio.CheerioAPI = loadCheerio(html);
 
     $('#searchResultBox')
       .find('div.book-item')
