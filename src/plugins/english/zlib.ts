@@ -153,7 +153,9 @@ class Zlibrary_plugin implements Plugin.PluginBase {
         .trim() || 'Unavailable';
 
     novel.summary = `
-      ${showDesc}\n
+      <p>
+      Name : ${$('div.col-sm-9').find('h1').text().trim()}\n
+      <br/>
       Type : ${type}\n
       Year : ${year}\n
       Publisher : ${publisher}\n
@@ -161,19 +163,17 @@ class Zlibrary_plugin implements Plugin.PluginBase {
       Pages : ${pages}\n
       ISBN10 : ${isbn10}\n
       ISBN13 : ${isbn13}\n
-      Filetype&Size : ${filetypeSize}
+      Filetype&Size : ${filetypeSize}\n </p>
+      <br/>
+      <br/>
+      <p>${showDesc}</p>
       `;
 
     const chapters: Plugin.ChapterItem[] = [];
 
     const chapter: Plugin.ChapterItem = {
       name: `${$('div.col-sm-9').find('h1').text().trim()}`,
-      path: `${$(
-        'div.col-md-12 div section.book-actions-container div.book-details-button div.btn-group',
-      )
-        .eq(2)
-        .find('a.btn')
-        .attr('href')}`,
+      path: `${novelPath}`,
       releaseTime:
         $('div.col-sm-9 div.bookDetailsBox div.property_year')
           .find('div.property_value')
@@ -187,12 +187,33 @@ class Zlibrary_plugin implements Plugin.PluginBase {
     return novel;
   }
   async parseChapter(chapterPath: string): Promise<string> {
+    const page: string = await this.getHtml(`${this.site}/book/${chapterPath}`);
+    const $: cheerio.CheerioAPI = loadCheerio(page);
+
+    const readOnline: string | undefined = $(
+      'div.col-md-12 div section.book-actions-container div.book-details-button div.btn-group',
+    )
+      .eq(0)
+      .find('a.btn')
+      .attr('href');
+
     if (chapterPath) {
-      const epubLink = `${this.site}${chapterPath}`;
+      const epubLink = `${this.site}/book/${chapterPath}`;
       return `
           <p>
+            </br>
+            </br>
+            <b>Plese login to the Z-Library website to download/read the book.</b>
+            </br>
+            <b>Remember to import the Downloaded EPUB file to access it in the lnreader app</b>
+            </br>
+            </br>
             <b>Click below to download the EPUB:</b><br/>
-            <a href="${epubLink}">${epubLink}</a>
+            <a href="${epubLink}">Download</a>
+            <br/>
+            <br/>
+            <b>Click below to Read the book online</b><br/>
+            <a href="${readOnline}">Read Online</a>
           </p>
         `;
     }
