@@ -1,5 +1,7 @@
 # Z-lib plugin for lnreader
 
+incoming : filter support.
+
 Download LNReader
 [LNReader](https://github.com/LNReader/lnreader).
 
