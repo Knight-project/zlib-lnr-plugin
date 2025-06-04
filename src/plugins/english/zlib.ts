@@ -157,7 +157,7 @@ class Zlibrary_plugin implements Plugin.PluginBase {
         .text()
         .trim() || 'Unavailable';
 
-    novel.summary = `DISCLAIMER : YOU NEED TO LOG IN TO THE Z-LIBRARY WEBSITE THROUGH THE WEBVIEW TO DOWNLOAD OR READ THE BOOK! \n\n\nName : ${$('div.col-sm-9').find('h1').text().trim()}\nType : ${type}\nYear : ${year}\nPublisher : ${publisher}\nLanguage : ${language}\nPages : ${pages}\nISBN10 : ${isbn10}\nISBN13 : ${isbn13}\nFiletype&Size : ${filetypeSize}\n\n${showDesc}`;
+    novel.summary = `Name : ${$('div.col-sm-9').find('h1').text().trim()}\nType : ${type}\nYear : ${year}\nPublisher : ${publisher}\nLanguage : ${language}\nPages : ${pages}\nISBN10 : ${isbn10}\nISBN13 : ${isbn13}\nFiletype&Size : ${filetypeSize}\n\n${showDesc}`;
 
     const chapters: Plugin.ChapterItem[] = [];
 
