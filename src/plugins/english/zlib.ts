@@ -13,10 +13,10 @@ import * as cheerio from 'cheerio';
 
 class Zlibrary_plugin implements Plugin.PluginBase {
   id = 'zlibrary';
-  name = 'Z Library';
+  name = 'Z-Library';
   icon = 'src/en/zlib/zlib.png';
   site = 'https://z-lib.fm';
-  version = '1.0.0';
+  version = '1.0.2';
   filters: Filters | undefined = undefined;
   imageRequestInit?: Plugin.ImageRequestInit | undefined = undefined;
 
